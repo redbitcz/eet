@@ -236,9 +236,18 @@ class Dispatcher {
      * @return object
      */
     private function processData(Receipt $receipt, $check = FALSE) {
+        $_log = [
+            'receipt' => $receipt,
+        ];
         $data = $this->prepareData($receipt, $check);
+        $_log['prepareData'] = $data;
+        $response = $this->getSoapClient()->OdeslaniTrzby($data);
+        $_log['response'] = $response;
 
-        return $this->getSoapClient()->OdeslaniTrzby($data);
+        //Dependendy to internal PANDA function
+        //TODO: Fix it
+        wbk_log('EET', $_log);
+        return $response;
     }
 
     /**
